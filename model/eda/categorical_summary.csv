@@ -1,0 +1,20 @@
+kolom,kategori,jumlah
+sex,Male,206
+sex,Female,97
+cp,asymptomatic,144
+cp,non-anginal,86
+cp,atypical angina,50
+cp,typical angina,23
+fbs,False,258
+fbs,True,45
+restecg,normal,151
+restecg,lv hypertrophy,148
+restecg,st-t abnormality,4
+exang,False,204
+exang,True,99
+slope,upsloping,142
+slope,flat,140
+slope,downsloping,21
+thal,normal,166
+thal,reversable defect,119
+thal,fixed defect,18

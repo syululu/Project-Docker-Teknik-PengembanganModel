@@ -1,0 +1,45 @@
+{
+    "algorithm": "XGBoost",
+    "model_type": "binary_classification",
+    "target_column": "target",
+    "original_target_column": "num",
+    "target_mapping": {
+        "0": "Tidak terindikasi (num = 0)",
+        "1": "Terindikasi (num > 0)"
+    },
+    "feature_columns": [
+        "age",
+        "sex",
+        "cp",
+        "trestbps",
+        "chol",
+        "fbs",
+        "restecg",
+        "thalch",
+        "exang",
+        "oldpeak",
+        "slope",
+        "ca",
+        "thal"
+    ],
+    "numeric_features": [
+        "age",
+        "trestbps",
+        "chol",
+        "thalch",
+        "oldpeak",
+        "ca"
+    ],
+    "categorical_features": [
+        "sex",
+        "cp",
+        "fbs",
+        "restecg",
+        "exang",
+        "slope",
+        "thal"
+    ],
+    "test_size": 0.2,
+    "random_state": 42,
+    "model_file": "xgboost_heart_disease.pkl"
+}

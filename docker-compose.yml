@@ -1,0 +1,61 @@
+
+services:
+  # 1. Aplikasi Streamlit
+  ml-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: streamlit run ui.py --server.port 8501 --server.address 0.0.0.0
+    expose:
+      - "8501"
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+        reservations:
+          cpus: "0.10"
+          memory: 256M
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+    restart: unless-stopped
+
+  # 2. Nginx Gateway / Load Balancer
+  nginx-lb:
+    image: nginx:alpine
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      ml-ui:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # 3. Redis
+  redis-db:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # 4. Locust Load Testing
+  locust:
+    image: locustio/locust
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --host http://nginx-lb
+    depends_on:
+      - nginx-lb
+    restart: unless-stopped
